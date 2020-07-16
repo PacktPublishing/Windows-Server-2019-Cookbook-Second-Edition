@@ -1,0 +1,31 @@
+﻿Configuration PacktWebServer {
+
+    Import-DscResource -ModuleName PsDesiredStateConfiguration
+    Import-DscResource -ModuleName xWebAdministration
+    
+    Node 'localhost' {
+        WindowsFeature WebServer {
+            Ensure = "Present"
+            Name   = "Web-Server"
+        }
+
+        xWebSite RemoveDefault {
+            Ensure = "Absent"
+            Name = "Default Web Site"
+        }
+
+        File WebsiteDefault {
+            Ensure = "Present"
+            DestinationPath = "C:\inetpub\NewWebsite\Default.htm"
+            Contents = "Congratulations, you are viewing our new website, configured by DSC!"
+        }
+
+        xWebSite NewSite {
+            Ensure = "Present"
+            Name = "New Website"
+            PhysicalPath = "C:\inetpub\NewWebsite\"
+            State = "Started"
+        }
+
+    }
+}

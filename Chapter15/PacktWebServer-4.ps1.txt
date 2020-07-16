@@ -1,0 +1,60 @@
+﻿Configuration PacktWebServer {
+    param(
+        [string[]]$NodeName
+    ) 
+    Import-DscResource -ModuleName PsDesiredStateConfiguration
+    Import-DscResource -ModuleName xWebAdministration
+    Import-DscResource -ModuleName CertificateDsc
+    
+    Node $NodeName  {
+        WindowsFeature WebServer {
+            Ensure = "Present"
+            Name   = "Web-Server"
+        }
+
+        xWebSite RemoveDefault {
+            Ensure = "Absent"
+            Name = "Default Web Site"
+        }
+
+        File WebsiteDefault {
+            Ensure = "Present"
+            DestinationPath = "C:\inetpub\NewWebsite\Default.htm"
+            Contents = "Congratulations, you are viewing our new website, configured by DSC!"
+        }
+
+        xWebSite NewSite {
+            Ensure = "Present"
+            Name = "New Website"
+            PhysicalPath = "C:\inetpub\NewWebsite\"
+            State = "Started"
+            DependsOn = "[CertReq]SSLCert"
+            BindingInfo = @(
+                MSFT_xWebBindingInformation{
+                    Protocol = "HTTPS"
+                    Port = 443
+                    CertificateSubject = "$NodeName.ad.cookbook.packt.com"
+                }
+                MSFT_xWebBindingInformation{
+                    Protocol = "HTTP"
+                    Port = 80
+                }
+            )
+        }
+
+        CertReq SSLCert
+        {
+            CAServerFQDN        = "ca01.ad.cookbook.packt.com"
+            Subject             = "$NodeName.ad.cookbook.packt.com"
+            KeyLength           = "2048"
+            ProviderName        = '"Microsoft RSA SChannel Cryptographic Provider"'
+            CertificateTemplate = "WebServer"
+            AutoRenew           = $true
+            FriendlyName        = "SSL Certificate for IIS"
+            KeyType             = "RSA"
+            RequestType         = "CMC"
+        }
+    }
+}
+
+PacktWebServer -NodeName @('web01','web02','web03')

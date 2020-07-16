@@ -1,0 +1,31 @@
+[DscLocalConfigurationManager()]
+Configuration EnableAzureDSC
+{
+    param
+    (
+        [Parameter(Mandatory = $True)][String]$RegistrationKey,
+        [Parameter(Mandatory = $True)][String[]]$ComputerName
+    )
+
+    Node $ComputerName
+    {
+        Settings {
+            RefreshMode = 'Pull'
+        }
+
+        ConfigurationRepositoryWeb AzureAutomationStateConfiguration {
+            ServerUrl       = "https://ac-agentservice-prod-1.azure-automation.net/accounts/254a172b-f456-4280-b22c-a1b9b57dffcc"
+            RegistrationKey = $RegistrationKey
+        }
+
+        ResourceRepositoryWeb AzureAutomationStateConfiguration {
+            ServerUrl       = "https://ac-agentservice-prod-1.azure-automation.net/accounts/254a172b-f456-4280-b22c-a1b9b57dffcc"
+            RegistrationKey = $RegistrationKey
+        }
+
+        ReportServerWeb AzureAutomationStateConfiguration {
+            ServerUrl       = "https://ac-agentservice-prod-1.azure-automation.net/accounts/254a172b-f456-4280-b22c-a1b9b57dffcc"
+            RegistrationKey = $RegistrationKey
+        }
+    }
+}

@@ -1,0 +1,15 @@
+# escape=`
+FROM mcr.microsoft.com/windows/servercore:1909
+
+RUN powershell -Command `
+    Add-WindowsFeature Web-Server; `
+    Invoke-WebRequest -UseBasicParsing -Uri "https://dotnetbinaries.blob.core.windows.net/servicemonitor/2.0.1.10/ServiceMonitor.exe" -OutFile "C:\ServiceMonitor.exe"
+
+RUN powershell -Command New-Item -Type Directory -Path C:\InetPub\NewWebsite
+RUN powershell -Command Set-Content C:\inetpub\NewWebsite\default.htm -Value 'Congratulations, you are viewing our new website, served from our docker container!'
+RUN powershell -Command Stop-Website -Name 'Default Web Site'
+RUN powershell -Command New-Website -Name 'NewWebsite' -PhysicalPath C:\inetpub\NewWebsite\
+
+EXPOSE 80/tcp
+
+ENTRYPOINT ["C:\\ServiceMonitor.exe", "w3svc"]

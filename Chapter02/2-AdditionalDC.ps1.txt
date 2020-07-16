@@ -1,0 +1,1 @@
+Install-ADDSDomainController -InstallDNS -DomainName ad.cookbook.packt.com

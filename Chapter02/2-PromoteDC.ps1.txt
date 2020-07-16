@@ -1,0 +1,2 @@
+Install-WindowsFeature AD-Domain-Services, DNS, DHCP -IncludeManagementTools
+Install-ADDSForest -DomainName ad.cookbook.packt.com -DomainMode WinThreshold -DomainNetbiosName COOKBOOK
