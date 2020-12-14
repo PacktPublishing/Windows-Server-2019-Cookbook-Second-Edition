@@ -1,3 +1,8 @@
+## $5 Tech Unlocked 2021!
+[Buy and download this product for only $5 on PacktPub.com](https://www.packtpub.com/)
+-----
+*The $5 campaign         runs from __December 15th 2020__ to __January 13th 2021.__*
+
 # Windows Server 2019 Cookbook — Second Edition
 
 <a href="https://www.packtpub.com/cloud-networking/windows-server-2019-cookbook-second-edition?utm_source=github&utm_medium=repository&utm_campaign=9781838987190"><img src="https://www.packtpub.com/media/catalog/product/cache/4cdce5a811acc0d2926d7f857dceb83b/9/7/9781838987190-original_33.jpeg" alt="Windows Server 2019 Cookbook — Second Edition" height="256px" align="right"></a>
